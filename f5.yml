@@ -1,0 +1,20 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+  - debug:
+      msg: "{{ lookup('env','https_proxy') }}"
+  
+  - name: Collect BIG-IP information
+    f5networks.f5_modules.bigip_device_info:
+      gather_subset:
+        - vlans
+      provider:
+        server: "{{ f5_host }}"
+        user: admin
+        password: "{{ f5_password }}"
+        server_port: 8443
+        validate_certs: no
+    delegate_to: localhost
